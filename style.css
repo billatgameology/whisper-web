@@ -276,6 +276,74 @@ body {
     }
 }
 
+/* Interior Gallery Section */
+.interior-gallery-section {
+    padding: 60px 0 80px;
+    background-color: #fff;
+}
+
+.interior-gallery-title {
+    text-align: center;
+    font-family: 'Kingthings Trypewriter', serif;
+    font-size: 42px;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.interior-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 18px;
+    padding: 0 20px;
+}
+
+.interior-item {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.interior-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .interior-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .interior-item {
+        height: 140px;
+    }
+
+    .interior-gallery-title {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .interior-gallery-section {
+        padding: 40px 0 60px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .interior-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .interior-item {
+        height: 200px;
+    }
+}
+
 /* 360 Panorama Section */
 .panorama-section {
     padding: 80px 0;

@@ -1,1 +1,15 @@
 venv/
+.venv/
+.DS_Store
+*.pyc
+__pycache__/
+optimize_foods.py
+optimize_inside.py
+FOODS/
+inside_photo/
+image_optimize/
+reference website/
+not used/
+whisper intro.txt
+kingthings-trypewriter-2/
+360photos/
