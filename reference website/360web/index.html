@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Harbor & Hearth — 360° Dining Tour</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    :root {
+      --bg: #0b0f14;
+      --panel: rgba(255, 255, 255, 0.06);
+      --panel-border: rgba(255, 255, 255, 0.10);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.70);
+      --header-h: 56px;
+      color-scheme: dark;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.4;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: rgba(11, 15, 20, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav a {
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    .hero {
+      width: 100%;
+    }
+
+    #panorama {
+      width: 100%;
+      height: calc(94vh - var(--header-h));
+      height: calc(94svh - var(--header-h));
+      background: #111827;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 6px;
+      max-width: 560px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(11, 15, 20, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .hero-subtitle {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .viewer-wrap {
+      position: relative;
+    }
+
+    .secondary-viewer {
+      width: 100%;
+      height: 70vh;
+      height: 70svh;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .inline-loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(11, 15, 20, 0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: opacity 240ms ease;
+    }
+
+    .inline-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    main {
+      padding: 22px 16px 44px;
+      display: grid;
+      gap: 22px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .section p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .menu-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .menu-item strong {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .menu-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .photos-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    figure {
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+    }
+
+    figcaption {
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (min-width: 720px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .photos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      figure img {
+        height: 280px;
+      }
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(11, 15, 20, 0.9);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 10;
+      opacity: 1;
+      transition: opacity 320ms ease;
+    }
+
+    .loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-card {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 4px solid rgba(255, 255, 255, 0.18);
+      border-top-color: rgba(255, 255, 255, 0.92);
+      animation: spin 0.9s linear infinite;
+    }
+
+    .loading-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .loading-subtitle {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner { animation: none; }
+      .loading { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Go to top">Harbor &amp; Hearth</a>
+    <nav class="nav" aria-label="Page navigation">
+      <a href="#menu">Menu</a>
+      <a href="#photos">Photos</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top" aria-label="Hero 360 view">
+    <div class="viewer-wrap">
+      <div id="panorama" aria-label="360 degree photo viewer"></div>
+      <div class="hero-overlay">
+        <h1 class="hero-title">Step inside our dining room</h1>
+        <p class="hero-subtitle">Drag to look around. Pinch to zoom. (Slow auto-rotate is enabled.)</p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="section" id="menu" aria-label="Menu">
+      <h2>Menu</h2>
+      <p>Coastal comfort food with a seasonal twist.</p>
+      <div class="menu-grid" role="list">
+        <div class="menu-item" role="listitem">
+          <div>
+            <strong>Charred Citrus Salmon</strong><br />
+            <span>lemon-herb butter, roasted greens</span>
+          </div>
+          <strong>$24</strong>
+        </div>
+        <div class="menu-item" role="listitem">
+          <div>
+            <strong>Hearth Roasted Chicken</strong><br />
+            <span>garlic jus, potatoes, thyme</span>
+          </div>
+          <strong>$19</strong>
+        </div>
+        <div class="menu-item" role="listitem">
+          <div>
+            <strong>Market Veggie Bowl</strong><br />
+            <span>grains, tahini, pickled crunch</span>
+          </div>
+          <strong>$16</strong>
+        </div>
+        <div class="menu-item" role="listitem">
+          <div>
+            <strong>Dark Cocoa Mousse</strong><br />
+            <span>sea salt, whipped cream</span>
+          </div>
+          <strong>$9</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="photos" aria-label="Photos">
+      <h2>Photos</h2>
+      <p>A couple of snapshots from the space.</p>
+      <div class="photos-grid">
+        <figure>
+          <img src="360photos/upstairs.jpg" alt="Upstairs dining area" loading="lazy" decoding="async" />
+          <figcaption>Upstairs seating</figcaption>
+        </figure>
+        <figure>
+          <img src="360photos/downstairs.jpg" alt="Downstairs dining area" loading="lazy" decoding="async" />
+          <figcaption>Downstairs seating</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="upstairs" aria-label="Upstairs 360 view">
+      <h2>Upstairs 360°</h2>
+      <p>Another quick look around the upstairs seating area.</p>
+      <div class="viewer-wrap" style="margin-top: 12px;">
+        <div id="panorama-upstairs" class="secondary-viewer" aria-label="Upstairs 360 degree photo viewer"></div>
+        <div id="loading-upstairs" class="inline-loading" role="status" aria-live="polite" aria-busy="true">
+          <div class="loading-card">
+            <div class="spinner" aria-hidden="true"></div>
+            <p class="loading-title">Loading Upstairs View...</p>
+            <p class="loading-subtitle">This loads when you scroll here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="loading" class="loading" role="status" aria-live="polite" aria-busy="true">
+    <div class="loading-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="loading-title">Loading 360 View...</p>
+      <p class="loading-subtitle">High-resolution image detected. This may take a moment on mobile.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Your panoramas are in the /360photos folder.
+      // Hero view uses downstairs; the upstairs view appears at the bottom.
+      const PANORAMA_SRC = '360photos/downstairs.jpg';
+      const UPSTAIRS_SRC = '360photos/upstairs.jpg';
+      const AUTO_ROTATE_SPEED = -2;
+
+      const loadingEl = document.getElementById('loading');
+      const titleEl = loadingEl.querySelector('.loading-title');
+      const subtitleEl = loadingEl.querySelector('.loading-subtitle');
+
+      // Pannellum won't reliably load local files due to browser security restrictions.
+      // Serve this folder over http(s) (e.g., localhost) for local testing.
+      if (location.protocol === 'file:') {
+        titleEl.textContent = 'Local file mode blocked';
+        subtitleEl.textContent = 'Run a local server (e.g., python -m http.server 8000) then open http://localhost:8000/';
+        return;
+      }
+
+      const viewers = {
+        hero: { instance: null, autoRotateDisabledByUser: false },
+        upstairs: { instance: null, autoRotateDisabledByUser: false }
+      };
+
+      function disableAutoRotateByUser(which) {
+        const entry = viewers[which];
+        if (!entry || !entry.instance) return;
+        entry.instance.stopAutoRotate();
+        entry.autoRotateDisabledByUser = true;
+      }
+
+      function enableAutoRotateIfDisabled(which) {
+        const entry = viewers[which];
+        if (!entry || !entry.instance) return;
+        if (!entry.autoRotateDisabledByUser) return;
+        entry.instance.startAutoRotate(AUTO_ROTATE_SPEED);
+        entry.autoRotateDisabledByUser = false;
+      }
+
+      function bindUserInteractionDisables(which) {
+        const entry = viewers[which];
+        if (!entry || !entry.instance || typeof entry.instance.on !== 'function') return;
+        // Pannellum stops auto-rotate on interaction; we track it so we can re-enable on scroll.
+        entry.instance.on('mousedown', function () { disableAutoRotateByUser(which); });
+        entry.instance.on('touchstart', function () { disableAutoRotateByUser(which); });
+      }
+
+      let scrollRaf = 0;
+      window.addEventListener(
+        'scroll',
+        function () {
+          if (scrollRaf) return;
+          scrollRaf = requestAnimationFrame(function () {
+            scrollRaf = 0;
+            enableAutoRotateIfDisabled('hero');
+            enableAutoRotateIfDisabled('upstairs');
+          });
+        },
+        { passive: true }
+      );
+
+      function hideLoading() {
+        loadingEl.classList.add('hidden');
+        loadingEl.setAttribute('aria-busy', 'false');
+      }
+
+      const upstairsLoadingEl = document.getElementById('loading-upstairs');
+      const upstairsTitleEl = upstairsLoadingEl ? upstairsLoadingEl.querySelector('.loading-title') : null;
+      const upstairsSubtitleEl = upstairsLoadingEl ? upstairsLoadingEl.querySelector('.loading-subtitle') : null;
+
+      function hideUpstairsLoading() {
+        if (!upstairsLoadingEl) return;
+        upstairsLoadingEl.classList.add('hidden');
+        upstairsLoadingEl.setAttribute('aria-busy', 'false');
+      }
+
+      // Show the loading overlay BEFORE initializing Pannellum.
+      // Preload the image (important for large 8K panoramas), then init.
+      const img = new Image();
+
+      img.onload = function () {
+        viewers.hero.instance = pannellum.viewer('panorama', {
+          type: 'equirectangular',
+          panorama: PANORAMA_SRC,
+          autoLoad: true,
+          compass: true,
+          autoRotate: AUTO_ROTATE_SPEED,
+          mouseZoom: false
+        });
+        bindUserInteractionDisables('hero');
+
+        requestAnimationFrame(hideLoading);
+
+        // Initialize the upstairs viewer only when it scrolls into view.
+        const targetEl = document.getElementById('panorama-upstairs');
+        const sectionEl = document.getElementById('upstairs');
+        if (!targetEl || !sectionEl) return;
+
+        let upstairsStarted = false;
+
+        function startUpstairs() {
+          if (upstairsStarted) return;
+          upstairsStarted = true;
+
+          const upstairsImg = new Image();
+          upstairsImg.onload = function () {
+            viewers.upstairs.instance = pannellum.viewer('panorama-upstairs', {
+              type: 'equirectangular',
+              panorama: UPSTAIRS_SRC,
+              autoLoad: true,
+              compass: true,
+              autoRotate: AUTO_ROTATE_SPEED,
+              mouseZoom: false
+            });
+            bindUserInteractionDisables('upstairs');
+            requestAnimationFrame(hideUpstairsLoading);
+          };
+          upstairsImg.onerror = function () {
+            if (upstairsTitleEl) upstairsTitleEl.textContent = 'Unable to load upstairs view';
+            if (upstairsSubtitleEl) upstairsSubtitleEl.textContent = 'Check that the file exists at: ' + UPSTAIRS_SRC;
+          };
+          upstairsImg.src = UPSTAIRS_SRC;
+        }
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            function (entries, obs) {
+              for (const entry of entries) {
+                if (entry.isIntersecting) {
+                  obs.disconnect();
+                  startUpstairs();
+                  return;
+                }
+              }
+            },
+            { root: null, rootMargin: '200px 0px', threshold: 0.01 }
+          );
+          observer.observe(sectionEl);
+        } else {
+          // Fallback: load after the page finishes loading.
+          window.addEventListener('load', startUpstairs, { once: true });
+        }
+      };
+
+      img.onerror = function () {
+        titleEl.textContent = 'Unable to load the 360 image';
+        subtitleEl.textContent = 'Check that the file exists at: ' + PANORAMA_SRC;
+      };
+
+      img.src = PANORAMA_SRC;
+    })();
+  </script>
+</body>
+</html>
