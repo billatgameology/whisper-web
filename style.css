@@ -528,6 +528,7 @@ body {
 }
 
 .info-item p {
+    font-family: 'Kingthings Trypewriter', serif;
     font-size: 1.1rem;
     color: #333;
     line-height: 1.6;
@@ -535,6 +536,7 @@ body {
 }
 
 .info-item a {
+    font-family: 'Kingthings Trypewriter', serif;
     color: #333;
     text-decoration: none;
     transition: color 0.3s ease;
