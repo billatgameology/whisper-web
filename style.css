@@ -1,0 +1,354 @@
+/* Import Custom Font */
+@font-face {
+    font-family: 'Kingthings Trypewriter';
+    src: url('fonts/Kingthings Trypewriter 2.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Menu Bar */
+.menu-bar {
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo-container {
+    height: 60px;
+}
+
+.logo {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Menu Buttons */
+.menu-buttons {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    align-items: center;
+}
+
+.menu-buttons a {
+    font-family: 'Kingthings Trypewriter', serif;
+    color: #000000;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    font-weight: normal;
+}
+
+.menu-buttons a:hover {
+    color: #555555;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay h1 {
+    font-family: 'Kingthings Trypewriter', serif;
+    color: #ffffff;
+    font-size: 3rem;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    font-weight: normal;
+}
+
+/* Store Hours Section */
+.store-hours {
+    background-color: #f5f5f5;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.hours-content h2 {
+    font-family: 'Kingthings Trypewriter', serif;
+    font-size: 3em;
+    letter-spacing: 0.15em;
+    margin-bottom: 30px;
+    color: #000;
+    font-weight: normal;
+}
+
+.hours-content .hours-days {
+    font-family: 'Kingthings Trypewriter', serif;
+    font-size: 2em;
+    letter-spacing: 0.1em;
+    margin-bottom: 15px;
+    color: #000;
+    font-weight: normal;
+}
+
+.hours-content .hours-time {
+    font-family: 'Kingthings Trypewriter', serif;
+    font-size: 2em;
+    letter-spacing: 0.1em;
+    color: #000;
+    font-weight: normal;
+}
+
+/* Menu Section */
+.menu-section {
+    padding: 80px 0;
+    background-color: #ffffff;
+}
+
+.menu-title {
+    font-family: 'Kingthings Trypewriter', serif;
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 50px;
+    letter-spacing: 0.1em;
+    color: #000;
+    font-weight: normal;
+}
+
+.menu-images {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.menu-page {
+    max-width: 45%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .menu-page {
+        max-width: 100%;
+    }
+}
+
+/* 360 Panorama Section */
+.panorama-section {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.panorama-section-alt {
+    background-color: #ffffff;
+}
+
+.panorama-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.panorama-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #000000;
+}
+
+.panorama-header p {
+    font-size: 1rem;
+    color: #666666;
+}
+
+.viewer-wrap {
+    position: relative;
+    width: 100%;
+}
+
+#panorama {
+    width: 100%;
+    height: 70vh;
+    min-height: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #000000;
+}
+
+#panorama-upstairs {
+    width: 100%;
+    height: 70vh;
+    min-height: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #000000;
+}
+
+.panorama-loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 16px;
+    transition: opacity 240ms ease;
+}
+
+.panorama-loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-card {
+    display: grid;
+    gap: 14px;
+    justify-items: center;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 320px;
+    text-align: center;
+}
+
+.spinner {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #000000;
+    animation: spin 0.9s linear infinite;
+}
+
+.loading-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; }
+    .panorama-loading { transition: none; }
+}
+
+/* Main Content */
+.content-section {
+    padding: 60px 0;
+    background-color: #ffffff;
+}
+
+.content-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: #000000;
+}
+
+.content-section p {
+    font-size: 1.2rem;
+    color: #333333;
+    line-height: 1.8;
+}
+
+/* Footer */
+footer {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 30px 0;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+    }
+    
+    .menu-buttons {
+        margin-top: 15px;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .hero {
+        min-height: 500px;
+    }
+    
+    .hero-overlay h1 {
+        font-size: 2rem;
+    }
+    
+    .menu-buttons a {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-buttons {
+        gap: 15px;
+    }
+    
+    .menu-buttons a {
+        font-size: 14px;
+    }
+    
+    .hero-overlay h1 {
+        font-size: 1.5rem;
+    }
+}

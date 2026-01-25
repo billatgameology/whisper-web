@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Name</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Menu Bar -->
+    <header class="menu-bar">
+        <div class="container">
+            <nav class="nav-container">
+                <div class="logo-container">
+                    <img src="photos/logo cropped transparent.png" alt="Restaurant Logo" class="logo">
+                </div>
+                <ul class="menu-buttons">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="photos/hero_optimized.jpeg" alt="Hero Image" class="hero-image">
+        <div class="hero-overlay">
+            <h1>A brunch cafe built on<br>warmth, craftsmanship,<br>and creativity.</h1>
+        </div>
+    </section>
+
+    <!-- Store Hours Section -->
+    <section class="store-hours">
+        <div class="hours-content">
+            <h2>NOW OPEN</h2>
+            <p class="hours-days">EVERYDAY</p>
+            <p class="hours-time">8AM – 3PM</p>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <h2 class="menu-title">Our Menu</h2>
+            <div class="menu-images">
+                <img src="photos/menu page1_optimized.png" alt="Menu Page 1" class="menu-page">
+                <img src="photos/menu page2_optimized.png" alt="Menu Page 2" class="menu-page">
+            </div>
+        </div>
+    </section>
+
+    <!-- 360 Photo Viewer Section -->
+    <section class="panorama-section" id="tour">
+        <div class="container">
+            <div class="panorama-header">
+                <h2>Step Inside</h2>
+                <p>Drag to look around. Pinch to zoom.</p>
+            </div>
+            <div class="viewer-wrap">
+                <div id="panorama" aria-label="360 degree photo viewer"></div>
+                <div id="loading-panorama" class="panorama-loading" role="status" aria-live="polite" aria-busy="true">
+                    <div class="loading-card">
+                        <div class="spinner" aria-hidden="true"></div>
+                        <p class="loading-title">Loading 360 View...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upstairs 360 Photo Viewer Section -->
+    <section class="panorama-section panorama-section-alt" id="upstairs">
+        <div class="container">
+            <div class="panorama-header">
+                <h2>Upstairs View</h2>
+                <p>Explore the upstairs seating area.</p>
+            </div>
+            <div class="viewer-wrap">
+                <div id="panorama-upstairs" aria-label="Upstairs 360 degree photo viewer"></div>
+                <div id="loading-upstairs" class="panorama-loading" role="status" aria-live="polite" aria-busy="true">
+                    <div class="loading-card">
+                        <div class="spinner" aria-hidden="true"></div>
+                        <p class="loading-title">Loading Upstairs View...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="content-section">
+            <div class="container">
+                <h2>About Us</h2>
+                <p>Experience exceptional dining with our carefully crafted menu and welcoming atmosphere.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Restaurant Name. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const PANORAMA_SRC = '360photos/downstairs.jpg';
+            const UPSTAIRS_SRC = '360photos/upstairs.jpg';
+            const AUTO_ROTATE_SPEED = -5;
+            const loadingEl = document.getElementById('loading-panorama');
+            const upstairsLoadingEl = document.getElementById('loading-upstairs');
+
+            if (location.protocol === 'file:') {
+                if (loadingEl) {
+                    const titleEl = loadingEl.querySelector('.loading-title');
+                    if (titleEl) titleEl.textContent = 'Please run a local server to view 360 photos';
+                }
+                if (upstairsLoadingEl) {
+                    const titleEl = upstairsLoadingEl.querySelector('.loading-title');
+                    if (titleEl) titleEl.textContent = 'Please run a local server to view 360 photos';
+                }
+                return;
+            }
+
+            const viewers = {
+                main: { instance: null, autoRotateDisabledByUser: false },
+                upstairs: { instance: null, autoRotateDisabledByUser: false }
+            };
+
+            function disableAutoRotateByUser(which) {
+                const entry = viewers[which];
+                if (!entry || !entry.instance) return;
+                entry.instance.stopAutoRotate();
+                entry.autoRotateDisabledByUser = true;
+            }
+
+            function enableAutoRotateIfDisabled(which) {
+                const entry = viewers[which];
+                if (!entry || !entry.instance) return;
+                if (!entry.autoRotateDisabledByUser) return;
+                entry.instance.startAutoRotate(AUTO_ROTATE_SPEED);
+                entry.autoRotateDisabledByUser = false;
+            }
+
+            function bindUserInteractionDisables(which) {
+                const entry = viewers[which];
+                if (!entry || !entry.instance || typeof entry.instance.on !== 'function') return;
+                entry.instance.on('mousedown', function () { disableAutoRotateByUser(which); });
+                entry.instance.on('touchstart', function () { disableAutoRotateByUser(which); });
+            }
+
+            let scrollRaf = 0;
+            window.addEventListener(
+                'scroll',
+                function () {
+                    if (scrollRaf) return;
+                    scrollRaf = requestAnimationFrame(function () {
+                        scrollRaf = 0;
+                        enableAutoRotateIfDisabled('main');
+                        enableAutoRotateIfDisabled('upstairs');
+                    });
+                },
+                { passive: true }
+            );
+
+            // Load main panorama
+            const img = new Image();
+            img.onload = function () {
+                viewers.main.instance = pannellum.viewer('panorama', {
+                    type: 'equirectangular',
+                    panorama: PANORAMA_SRC,
+                    autoLoad: true,
+                    compass: true,
+                    autoRotate: AUTO_ROTATE_SPEED,
+                    mouseZoom: false
+                });
+                bindUserInteractionDisables('main');
+
+                requestAnimationFrame(function() {
+                    if (loadingEl) {
+                        loadingEl.classList.add('hidden');
+                        loadingEl.setAttribute('aria-busy', 'false');
+                    }
+                });
+            };
+
+            img.onerror = function () {
+                if (loadingEl) {
+                    const titleEl = loadingEl.querySelector('.loading-title');
+                    if (titleEl) titleEl.textContent = 'Unable to load 360 image';
+                }
+            };
+
+            img.src = PANORAMA_SRC;
+
+            // Lazy load upstairs panorama when section comes into view
+            const upstairsSection = document.getElementById('upstairs');
+            if (upstairsSection) {
+                let upstairsLoaded = false;
+
+                function loadUpstairs() {
+                    if (upstairsLoaded) return;
+                    upstairsLoaded = true;
+
+                    const upstairsImg = new Image();
+                    upstairsImg.onload = function () {
+                        viewers.upstairs.instance = pannellum.viewer('panorama-upstairs', {
+                            type: 'equirectangular',
+                            panorama: UPSTAIRS_SRC,
+                            autoLoad: true,
+                            compass: true,
+                            autoRotate: AUTO_ROTATE_SPEED,
+                            mouseZoom: false,
+                            pitch: -15
+                        });
+                        bindUserInteractionDisables('upstairs');
+
+                        requestAnimationFrame(function() {
+                            if (upstairsLoadingEl) {
+                                upstairsLoadingEl.classList.add('hidden');
+                                upstairsLoadingEl.setAttribute('aria-busy', 'false');
+                            }
+                        });
+                    };
+
+                    upstairsImg.onerror = function () {
+                        if (upstairsLoadingEl) {
+                            const titleEl = upstairsLoadingEl.querySelector('.loading-title');
+                            if (titleEl) titleEl.textContent = 'Unable to load upstairs view';
+                        }
+                    };
+
+                    upstairsImg.src = UPSTAIRS_SRC;
+                }
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver(
+                        function (entries, obs) {
+                            for (const entry of entries) {
+                                if (entry.isIntersecting) {
+                                    obs.disconnect();
+                                    loadUpstairs();
+                                    return;
+                                }
+                            }
+                        },
+                        { root: null, rootMargin: '200px 0px', threshold: 0.01 }
+                    );
+                    observer.observe(upstairsSection);
+                } else {
+                    window.addEventListener('load', loadUpstairs, { once: true });
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
