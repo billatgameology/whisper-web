@@ -30,7 +30,7 @@ body {
 .menu-bar {
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: relative;
+    position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
@@ -77,9 +77,10 @@ body {
 /* Hero Section */
 .hero {
     position: relative;
-    height: 100vh;
+    height: calc(100vh - 80px);
     min-height: 600px;
     overflow: hidden;
+    margin-top: 80px;
 }
 
 .hero-image {
