@@ -247,19 +247,21 @@ body {
 .order-online-btn {
     display: inline-block;
     padding: 12px 28px;
-    background: #6E8B74;
+    background: #7F9A84;
     color: #fff;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-family: 'Kingthings Trypewriter', serif;
     font-size: 18px;
     letter-spacing: 0.04em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     transition: all 0.2s ease;
 }
 
 .order-online-btn:hover {
-    background: #5D7863;
+    background: #6F8A74;
     transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
 }
 
 @media (max-width: 768px) {
