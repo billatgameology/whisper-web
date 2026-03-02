@@ -656,12 +656,24 @@ body {
 @media (max-width: 480px) {
     .hours-table {
         min-width: 0;
-        font-size: 0.86em;
-        letter-spacing: 0.02em;
+        font-size: 0.78em;
+        letter-spacing: 0.01em;
     }
     .hours-table th,
     .hours-table td {
-        padding: 6px 6px;
+        padding: 5px 4px;
+    }
+    .hours-table th:nth-child(1),
+    .hours-table td:nth-child(1) { width: 22%; }
+    .hours-table th:nth-child(2),
+    .hours-table td:nth-child(2) { width: 39%; }
+    .hours-table th:nth-child(3),
+    .hours-table td:nth-child(3) { width: 39%; }
+}
+
+@media (max-width: 390px) {
+    .hours-table {
+        font-size: 0.72em;
     }
 }
 
