@@ -614,34 +614,36 @@ body {
 }
 
 /* Hours Table */
+
 .hours-content {
     overflow-x: auto;
 }
 
 .hours-table {
-    table-layout: auto;
-}
-
-.hours-table td:nth-child(2),
-.hours-table td:nth-child(3) {
-    min-width: 120px;
-}
-
-.hours-table {
+    width: 100%;
+    max-width: 980px;
     margin: 0 auto;
     border-collapse: collapse;
+    table-layout: fixed;
     font-family: 'Kingthings Trypewriter', serif;
-    font-size: 1.4em;
-    letter-spacing: 0.05em;
+    font-size: 1.35em;
+    letter-spacing: 0.04em;
     color: #000;
 }
 
 .hours-table th,
 .hours-table td {
-    padding: 8px 22px;
+    padding: 8px 14px;
     text-align: left;
     white-space: nowrap;
 }
+
+.hours-table th:nth-child(1),
+.hours-table td:nth-child(1) { width: 24%; }
+.hours-table th:nth-child(2),
+.hours-table td:nth-child(2) { width: 38%; }
+.hours-table th:nth-child(3),
+.hours-table td:nth-child(3) { width: 38%; }
 
 .hours-table th {
     font-size: 0.8em;
@@ -653,11 +655,13 @@ body {
 
 @media (max-width: 480px) {
     .hours-table {
-        font-size: 0.95em;
+        min-width: 0;
+        font-size: 0.86em;
+        letter-spacing: 0.02em;
     }
     .hours-table th,
     .hours-table td {
-        padding: 6px 8px;
+        padding: 6px 6px;
     }
 }
 
