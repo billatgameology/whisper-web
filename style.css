@@ -653,28 +653,22 @@ body {
     padding-bottom: 10px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .hours-table {
         min-width: 0;
-        font-size: 0.78em;
-        letter-spacing: 0.01em;
+        font-size: 0.86em;
+        letter-spacing: 0.02em;
     }
     .hours-table th,
     .hours-table td {
-        padding: 5px 4px;
+        padding: 6px 6px;
     }
     .hours-table th:nth-child(1),
-    .hours-table td:nth-child(1) { width: 22%; }
+    .hours-table td:nth-child(1) { width: 24%; }
     .hours-table th:nth-child(2),
-    .hours-table td:nth-child(2) { width: 39%; }
+    .hours-table td:nth-child(2) { width: 38%; }
     .hours-table th:nth-child(3),
-    .hours-table td:nth-child(3) { width: 39%; }
-}
-
-@media (max-width: 390px) {
-    .hours-table {
-        font-size: 0.72em;
-    }
+    .hours-table td:nth-child(3) { width: 38%; }
 }
 
 /* Media Coverage Section */
