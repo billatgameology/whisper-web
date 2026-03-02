@@ -1046,3 +1046,8 @@ footer {
         font-size: 1rem;
     }
 }
+
+
+.time-nowrap {
+    white-space: nowrap;
+}
