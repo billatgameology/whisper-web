@@ -616,7 +616,7 @@ body {
 /* Hours Table */
 
 .hours-content {
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 .hours-table {
