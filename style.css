@@ -614,6 +614,19 @@ body {
 }
 
 /* Hours Table */
+.hours-content {
+    overflow-x: auto;
+}
+
+.hours-table {
+    table-layout: auto;
+}
+
+.hours-table td:nth-child(2),
+.hours-table td:nth-child(3) {
+    min-width: 120px;
+}
+
 .hours-table {
     margin: 0 auto;
     border-collapse: collapse;
