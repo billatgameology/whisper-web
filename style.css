@@ -623,21 +623,28 @@ body {
     color: #000;
 }
 
+.hours-table th,
 .hours-table td {
-    padding: 8px 30px;
+    padding: 8px 22px;
     text-align: left;
+    white-space: nowrap;
 }
 
-.hours-table td:last-child {
-    text-align: right;
+.hours-table th {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+    padding-bottom: 10px;
 }
 
 @media (max-width: 480px) {
     .hours-table {
-        font-size: 1.1em;
+        font-size: 0.95em;
     }
+    .hours-table th,
     .hours-table td {
-        padding: 6px 15px;
+        padding: 6px 8px;
     }
 }
 
