@@ -115,16 +115,17 @@ body {
 /* Promo Video Section */
 .promo-video {
     background: #000;
-    padding: 20px 0;
+    padding: 0;
+    width: 100%;
 }
 
 .promo-video-player {
     display: block;
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
     height: auto;
-    border-radius: 10px;
+    border-radius: 0;
 }
 
 /* Store Hours Section */
