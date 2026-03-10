@@ -117,12 +117,13 @@ body {
     background: #fff;
     padding: 20px 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .promo-video-player {
     display: block;
-    width: 100%;
-    max-width: 900px;
+    width: min(420px, 92vw);
     margin: 0 auto;
     height: auto;
     border-radius: 0;
