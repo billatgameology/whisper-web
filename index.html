@@ -504,5 +504,18 @@
         })();
     </script>
     
+    <script>
+      (function () {
+        const v = document.querySelector('.promo-video-player');
+        if (!v) return;
+        v.muted = false;
+        v.defaultMuted = false;
+        v.volume = 1;
+        v.addEventListener('play', () => {
+          v.muted = false;
+          v.volume = 1;
+        });
+      })();
+    </script>
 </body>
 </html>
