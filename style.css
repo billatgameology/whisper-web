@@ -117,16 +117,17 @@ body {
     background: #fff;
     padding: 20px 0;
     width: 100%;
-    display: flex;
-    justify-content: center;
 }
 
 .promo-video-player {
     display: block;
-    width: min(420px, 92vw);
-    margin: 0 auto;
+    width: 420px;
+    max-width: 92vw;
     height: auto;
     border-radius: 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 
