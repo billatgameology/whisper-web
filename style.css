@@ -119,15 +119,18 @@ body {
     width: 100%;
 }
 
+.promo-video-wrap {
+    display: flex;
+    justify-content: center;
+}
+
 .promo-video-player {
     display: block;
     width: 640px;
     max-width: 92vw;
     height: auto;
     border-radius: 0;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0 auto;
 }
 
 
