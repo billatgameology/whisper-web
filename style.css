@@ -686,11 +686,11 @@ body {
         padding: 6px 4px;
     }
     .hours-table th:nth-child(1),
-    .hours-table td:nth-child(1) { width: 26%; }
+    .hours-table td:nth-child(1) { width: 22%; }
     .hours-table th:nth-child(2),
-    .hours-table td:nth-child(2) { width: 37%; padding-left: 10px; }
+    .hours-table td:nth-child(2) { width: 39%; padding-left: 4px; }
     .hours-table th:nth-child(3),
-    .hours-table td:nth-child(3) { width: 37%; padding-left: 12px; }
+    .hours-table td:nth-child(3) { width: 39%; padding-left: 8px; }
 }
 
 /* Media Coverage Section */
