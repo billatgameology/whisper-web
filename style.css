@@ -1083,3 +1083,13 @@ footer {
 .time-nowrap {
     white-space: nowrap;
 }
+
+/* Improve readability for multi-line hours without changing layout */
+.info-item p .time-nowrap {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.info-item p .time-nowrap:last-child {
+    margin-bottom: 0;
+}
