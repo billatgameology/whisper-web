@@ -745,9 +745,8 @@
       document.getElementById(`count-${role}`).textContent = config.count;
       document.getElementById(`tardy-${role}`).textContent = config.tardy;
       document.getElementById(`total-${role}`).textContent = money(payout.total);
-      document.getElementById(`person-${role}`).textContent = money(
-        payout.onTimePerPerson
-      );
+      document.getElementById(`person-${role}`).textContent =
+        config.count > config.tardy ? money(payout.onTimePerPerson) : '—';
       document.getElementById(`person-tardy-${role}`).textContent = config.tardy > 0
         ? money(payout.tardyPerPerson)
         : '—';
