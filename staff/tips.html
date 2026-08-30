@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whisper Staff Tip Calculator</title>
+  <style>
+    :root {
+      --bg: #f6f1ea;
+      --panel: rgba(255, 255, 255, 0.82);
+      --card: #ffffff;
+      --text: #1d1d1d;
+      --muted: #5d5d5d;
+      --accent: #9a6b3f;
+      --accent-dark: #6e4830;
+      --line: #e9dcc8;
+      --good: #2f7d4a;
+      --shadow: 0 18px 40px rgba(36, 22, 15, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(rgba(255,255,255,0.22), rgba(255,255,255,0.22)),
+        url('../assets/images/branding/hero_optimized.jpeg') center/cover no-repeat fixed;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 18px;
+    }
+
+    .page-shell {
+      width: min(980px, 100%);
+      background: var(--panel);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(154, 107, 63, 0.18);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      background: rgba(24, 18, 14, 0.82);
+      color: #fff;
+    }
+
+    .brand {
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .status {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .summary-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 28px 28px 18px;
+    }
+
+    .summary-box label {
+      font-size: 0.8rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .summary-box input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 14px;
+      font-size: 1.2rem;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      padding: 0 28px 28px;
+    }
+
+    .server-group {
+      grid-column: 1 / -1;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 20px rgba(30, 22, 16, 0.04);
+    }
+
+    .role-card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 20px rgba(30, 22, 16, 0.04);
+    }
+
+    .role-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .role-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+
+    .role-percent {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .server-group-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .mini-role {
+      margin: 0;
+    }
+
+    .group-total-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      background: #f7efe9;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      min-width: 120px;
+    }
+
+    .group-total-box span {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .group-total-box strong {
+      font-size: 1.1rem;
+      color: var(--accent-dark);
+    }
+
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      background: #f7efe9;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .step-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: transparent;
+      color: var(--accent-dark);
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .step-btn:hover {
+      background: rgba(154, 107, 63, 0.08);
+    }
+
+    .count {
+      min-width: 34px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .role-values {
+      display: grid;
+      gap: 10px;
+    }
+
+    .role-values div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+
+    .role-values span {
+      color: var(--muted);
+    }
+
+    .role-values strong {
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0;
+    }
+
+    .panel {
+      padding: 32px 28px;
+    }
+
+    .panel + .panel {
+      border-left: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      color: var(--accent-dark);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    .subtitle {
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 14px;
+      font-size: 1.05rem;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(154, 107, 63, 0.1);
+    }
+
+    .results {
+      background: rgba(255,255,255,0.72);
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      padding: 22px;
+    }
+
+    .results h2 {
+      margin: 0 0 18px;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-dark);
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      gap: 12px;
+    }
+
+    .stat:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text);
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, rgba(154,107,63,0.1), rgba(110,72,48,0.12));
+      border: 1px solid rgba(154,107,63,0.18);
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+
+    .highlight .label {
+      display: block;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      margin-bottom: 6px;
+    }
+
+    .highlight .value {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      color: var(--accent-dark);
+      line-height: 1;
+    }
+
+    .hint {
+      margin-top: 26px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 760px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .panel + .panel {
+        border-left: none;
+        border-top: 1px solid var(--line);
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topbar">
+      <div class="brand">Whisper Brunch Cafe</div>
+      <div class="status">Staff Tips Split</div>
+    </div>
+
+    <div class="summary-box">
+      <label for="totalTips">Total tips collected today</label>
+      <input id="totalTips" type="number" min="0" step="0.01" value="960" />
+    </div>
+
+    <div class="role-grid">
+      <div class="server-group" data-role="serverGroup">
+        <div class="role-header">
+          <div>
+            <div class="role-name">Server Group</div>
+            <div class="role-percent">50% total pool</div>
+          </div>
+          <div class="group-total-box">
+            <span>Subtotal</span>
+            <strong id="server-group-total">$480.00</strong>
+          </div>
+        </div>
+
+        <div class="server-group-layout">
+          <div class="role-card mini-role" data-role="server">
+            <div class="role-header">
+              <div>
+                <div class="role-name">Server</div>
+                <div class="role-percent" id="share-server">23.68% of server pool each</div>
+              </div>
+              <div class="stepper">
+                <button type="button" class="step-btn minus" data-role="server">−</button>
+                <span class="count" id="count-server">3</span>
+                <button type="button" class="step-btn plus" data-role="server">+</button>
+              </div>
+            </div>
+            <div class="role-values">
+              <div><span>Combined payout</span><strong id="total-server">$341.05</strong></div>
+              <div><span>Each person</span><strong id="person-server">$113.68</strong></div>
+            </div>
+          </div>
+
+          <div class="role-card mini-role" data-role="leadServer">
+            <div class="role-header">
+              <div>
+                <div class="role-name">Lead Server</div>
+                <div class="role-percent" id="share-leadServer">28.95% of server pool each</div>
+              </div>
+              <div class="stepper">
+                <button type="button" class="step-btn minus" data-role="leadServer">−</button>
+                <span class="count" id="count-leadServer">1</span>
+                <button type="button" class="step-btn plus" data-role="leadServer">+</button>
+              </div>
+            </div>
+            <div class="role-values">
+              <div><span>Combined payout</span><strong id="total-leadServer">$138.95</strong></div>
+              <div><span>Each person</span><strong id="person-leadServer">$138.95</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="role-card" data-role="barrista">
+        <div class="role-header">
+          <div>
+            <div class="role-name">Barrista</div>
+            <div class="role-percent">8%</div>
+          </div>
+          <div class="stepper">
+            <button type="button" class="step-btn minus" data-role="barrista">−</button>
+            <span class="count" id="count-barrista">2</span>
+            <button type="button" class="step-btn plus" data-role="barrista">+</button>
+          </div>
+        </div>
+        <div class="role-values">
+          <div><span>Total pool</span><strong id="total-barrista">$76.80</strong></div>
+          <div><span>Each person</span><strong id="person-barrista">$38.40</strong></div>
+        </div>
+      </div>
+
+      <div class="role-card" data-role="busser">
+        <div class="role-header">
+          <div>
+            <div class="role-name">Busser</div>
+            <div class="role-percent">12%</div>
+          </div>
+          <div class="stepper">
+            <button type="button" class="step-btn minus" data-role="busser">−</button>
+            <span class="count" id="count-busser">2</span>
+            <button type="button" class="step-btn plus" data-role="busser">+</button>
+          </div>
+        </div>
+        <div class="role-values">
+          <div><span>Total pool</span><strong id="total-busser">$115.20</strong></div>
+          <div><span>Each person</span><strong id="person-busser">$57.60</strong></div>
+        </div>
+      </div>
+
+      <div class="role-card" data-role="kitchen">
+        <div class="role-header">
+          <div>
+            <div class="role-name">Kitchen</div>
+            <div class="role-percent">30%</div>
+          </div>
+          <div class="stepper">
+            <button type="button" class="step-btn minus" data-role="kitchen">−</button>
+            <span class="count" id="count-kitchen">4</span>
+            <button type="button" class="step-btn plus" data-role="kitchen">+</button>
+          </div>
+        </div>
+        <div class="role-values">
+          <div><span>Total pool</span><strong id="total-kitchen">$288.00</strong></div>
+          <div><span>Each person</span><strong id="person-kitchen">$72.00</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SERVER_POOL_PERCENT = 50;
+    const SERVER_WEIGHTS = {
+      server: 45,
+      leadServer: 55
+    };
+
+    const roles = {
+      server: { count: 3 },
+      leadServer: { count: 1 },
+      barrista: { percent: 8, count: 2 },
+      busser: { percent: 12, count: 2 },
+      kitchen: { percent: 30, count: 4 }
+    };
+
+    const totalTipsInput = document.getElementById('totalTips');
+
+    function money(value) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(value || 0);
+    }
+
+    function updateServerGroup() {
+      const totalTips = Number(totalTipsInput.value || 0);
+      const serverGroupTotal = (totalTips * SERVER_POOL_PERCENT) / 100;
+      const totalWeight =
+        roles.server.count * SERVER_WEIGHTS.server +
+        roles.leadServer.count * SERVER_WEIGHTS.leadServer;
+      const serverShare = SERVER_WEIGHTS.server / totalWeight;
+      const leadServerShare = SERVER_WEIGHTS.leadServer / totalWeight;
+      const serverPerPerson = serverGroupTotal * serverShare;
+      const leadServerPerPerson = serverGroupTotal * leadServerShare;
+      const serverTotal = serverPerPerson * roles.server.count;
+      const leadServerTotal = leadServerPerPerson * roles.leadServer.count;
+
+      document.getElementById('server-group-total').textContent = money(serverGroupTotal);
+
+      document.getElementById('count-server').textContent = roles.server.count;
+      document.getElementById('total-server').textContent = money(serverTotal);
+      document.getElementById('person-server').textContent = money(serverPerPerson);
+      document.getElementById('share-server').textContent =
+        `${(serverShare * 100).toFixed(2)}% of server pool each`;
+
+      document.getElementById('count-leadServer').textContent = roles.leadServer.count;
+      document.getElementById('total-leadServer').textContent = money(leadServerTotal);
+      document.getElementById('person-leadServer').textContent = money(leadServerPerPerson);
+      document.getElementById('share-leadServer').textContent =
+        `${(leadServerShare * 100).toFixed(2)}% of server pool each`;
+    }
+
+    function updateRole(role) {
+      const totalTips = Number(totalTipsInput.value || 0);
+      const config = roles[role];
+
+      const roleTotal = (totalTips * config.percent) / 100;
+      const perPerson = roleTotal / Math.max(config.count, 1);
+
+      document.getElementById(`count-${role}`).textContent = config.count;
+      document.getElementById(`total-${role}`).textContent = money(roleTotal);
+      document.getElementById(`person-${role}`).textContent = money(perPerson);
+    }
+
+    function updateAll() {
+      updateServerGroup();
+      ['barrista', 'busser', 'kitchen'].forEach(updateRole);
+    }
+
+    document.querySelectorAll('.step-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const role = button.dataset.role;
+        const current = roles[role].count;
+        const delta = button.classList.contains('plus') ? 1 : -1;
+        roles[role].count = Math.max(1, current + delta);
+        updateAll();
+      });
+    });
+
+    totalTipsInput.addEventListener('input', updateAll);
+    updateAll();
+  </script>
+</body>
+</html>
