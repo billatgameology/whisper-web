@@ -187,18 +187,24 @@
     }
 
     .step-btn {
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
       border: none;
       background: transparent;
       color: var(--accent-dark);
       font-size: 1.5rem;
       cursor: pointer;
       font-weight: 700;
+      touch-action: manipulation;
     }
 
     .step-btn:hover {
       background: rgba(154, 107, 63, 0.08);
+    }
+
+    .step-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.3;
     }
 
     .count {
@@ -206,6 +212,23 @@
       text-align: center;
       font-weight: 700;
       color: var(--text);
+    }
+
+    .tardy-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .tardy-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .role-values {
@@ -375,6 +398,16 @@
     }
 
     @media (max-width: 760px) {
+      body {
+        align-items: flex-start;
+        padding: 16px;
+        background-attachment: scroll;
+      }
+
+      .page-shell {
+        border-radius: 18px;
+      }
+
       .content {
         grid-template-columns: 1fr;
       }
@@ -391,7 +424,82 @@
       .topbar {
         flex-direction: column;
         gap: 10px;
+        padding: 18px 16px;
         text-align: center;
+      }
+
+      .summary-box {
+        padding: 22px 16px 14px;
+      }
+
+      .role-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 0 16px 20px;
+      }
+
+      .server-group {
+        grid-column: auto;
+        padding: 16px;
+      }
+
+      .server-group-layout {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .role-card {
+        padding: 16px;
+      }
+
+      .role-header {
+        flex-wrap: wrap;
+      }
+
+      .stepper {
+        margin-left: auto;
+      }
+
+      .role-values div {
+        font-size: 0.88rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      body {
+        padding: 0;
+      }
+
+      .page-shell {
+        min-height: 100dvh;
+        border: none;
+        border-radius: 0;
+      }
+
+      .brand {
+        font-size: 0.82rem;
+      }
+
+      .summary-box {
+        padding-inline: 12px;
+      }
+
+      .role-grid {
+        padding-inline: 12px;
+      }
+
+      .server-group,
+      .role-card {
+        padding: 14px;
+      }
+
+      .role-percent {
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+      }
+
+      .group-total-box {
+        min-width: 108px;
       }
     }
   </style>
@@ -426,7 +534,7 @@
             <div class="role-header">
               <div>
                 <div class="role-name">Server</div>
-                <div class="role-percent" id="share-server">23.68% of server pool each</div>
+                <div class="role-percent" id="share-server">23.68% base share each</div>
               </div>
               <div class="stepper">
                 <button type="button" class="step-btn minus" data-role="server">−</button>
@@ -434,9 +542,18 @@
                 <button type="button" class="step-btn plus" data-role="server">+</button>
               </div>
             </div>
+            <div class="tardy-row">
+              <span class="tardy-label">Tardy staff</span>
+              <div class="stepper">
+                <button type="button" class="step-btn minus" data-role="server" data-counter="tardy" aria-label="Remove tardy server">−</button>
+                <span class="count" id="tardy-server">0</span>
+                <button type="button" class="step-btn plus" data-role="server" data-counter="tardy" aria-label="Add tardy server">+</button>
+              </div>
+            </div>
             <div class="role-values">
               <div><span>Combined payout</span><strong id="total-server">$341.05</strong></div>
-              <div><span>Each person</span><strong id="person-server">$113.68</strong></div>
+              <div><span>On-time person</span><strong id="person-server">$113.68</strong></div>
+              <div><span>Tardy person</span><strong id="person-tardy-server">—</strong></div>
             </div>
           </div>
 
@@ -444,7 +561,7 @@
             <div class="role-header">
               <div>
                 <div class="role-name">Lead Server</div>
-                <div class="role-percent" id="share-leadServer">28.95% of server pool each</div>
+                <div class="role-percent" id="share-leadServer">28.95% base share each</div>
               </div>
               <div class="stepper">
                 <button type="button" class="step-btn minus" data-role="leadServer">−</button>
@@ -452,9 +569,18 @@
                 <button type="button" class="step-btn plus" data-role="leadServer">+</button>
               </div>
             </div>
+            <div class="tardy-row">
+              <span class="tardy-label">Tardy staff</span>
+              <div class="stepper">
+                <button type="button" class="step-btn minus" data-role="leadServer" data-counter="tardy" aria-label="Remove tardy lead server">−</button>
+                <span class="count" id="tardy-leadServer">0</span>
+                <button type="button" class="step-btn plus" data-role="leadServer" data-counter="tardy" aria-label="Add tardy lead server">+</button>
+              </div>
+            </div>
             <div class="role-values">
               <div><span>Combined payout</span><strong id="total-leadServer">$138.95</strong></div>
-              <div><span>Each person</span><strong id="person-leadServer">$138.95</strong></div>
+              <div><span>On-time person</span><strong id="person-leadServer">$138.95</strong></div>
+              <div><span>Tardy person</span><strong id="person-tardy-leadServer">—</strong></div>
             </div>
           </div>
         </div>
@@ -472,9 +598,18 @@
             <button type="button" class="step-btn plus" data-role="barrista">+</button>
           </div>
         </div>
+        <div class="tardy-row">
+          <span class="tardy-label">Tardy staff</span>
+          <div class="stepper">
+            <button type="button" class="step-btn minus" data-role="barrista" data-counter="tardy" aria-label="Remove tardy barrista">−</button>
+            <span class="count" id="tardy-barrista">0</span>
+            <button type="button" class="step-btn plus" data-role="barrista" data-counter="tardy" aria-label="Add tardy barrista">+</button>
+          </div>
+        </div>
         <div class="role-values">
           <div><span>Total pool</span><strong id="total-barrista">$76.80</strong></div>
-          <div><span>Each person</span><strong id="person-barrista">$38.40</strong></div>
+          <div><span>On-time person</span><strong id="person-barrista">$38.40</strong></div>
+          <div><span>Tardy person</span><strong id="person-tardy-barrista">—</strong></div>
         </div>
       </div>
 
@@ -490,9 +625,18 @@
             <button type="button" class="step-btn plus" data-role="busser">+</button>
           </div>
         </div>
+        <div class="tardy-row">
+          <span class="tardy-label">Tardy staff</span>
+          <div class="stepper">
+            <button type="button" class="step-btn minus" data-role="busser" data-counter="tardy" aria-label="Remove tardy busser">−</button>
+            <span class="count" id="tardy-busser">0</span>
+            <button type="button" class="step-btn plus" data-role="busser" data-counter="tardy" aria-label="Add tardy busser">+</button>
+          </div>
+        </div>
         <div class="role-values">
           <div><span>Total pool</span><strong id="total-busser">$115.20</strong></div>
-          <div><span>Each person</span><strong id="person-busser">$57.60</strong></div>
+          <div><span>On-time person</span><strong id="person-busser">$57.60</strong></div>
+          <div><span>Tardy person</span><strong id="person-tardy-busser">—</strong></div>
         </div>
       </div>
 
@@ -508,9 +652,18 @@
             <button type="button" class="step-btn plus" data-role="kitchen">+</button>
           </div>
         </div>
+        <div class="tardy-row">
+          <span class="tardy-label">Tardy staff</span>
+          <div class="stepper">
+            <button type="button" class="step-btn minus" data-role="kitchen" data-counter="tardy" aria-label="Remove tardy kitchen staff">−</button>
+            <span class="count" id="tardy-kitchen">0</span>
+            <button type="button" class="step-btn plus" data-role="kitchen" data-counter="tardy" aria-label="Add tardy kitchen staff">+</button>
+          </div>
+        </div>
         <div class="role-values">
           <div><span>Total pool</span><strong id="total-kitchen">$288.00</strong></div>
-          <div><span>Each person</span><strong id="person-kitchen">$72.00</strong></div>
+          <div><span>On-time person</span><strong id="person-kitchen">$72.00</strong></div>
+          <div><span>Tardy person</span><strong id="person-tardy-kitchen">—</strong></div>
         </div>
       </div>
     </div>
@@ -518,17 +671,18 @@
 
   <script>
     const SERVER_POOL_PERCENT = 50;
+    const TARDY_PAYOUT_RATE = 0.85;
     const SERVER_WEIGHTS = {
       server: 45,
       leadServer: 55
     };
 
     const roles = {
-      server: { count: 3 },
-      leadServer: { count: 1 },
-      barrista: { percent: 8, count: 2 },
-      busser: { percent: 12, count: 2 },
-      kitchen: { percent: 30, count: 4 }
+      server: { count: 3, tardy: 0 },
+      leadServer: { count: 1, tardy: 0 },
+      barrista: { percent: 8, count: 2, tardy: 0 },
+      busser: { percent: 12, count: 2, tardy: 0 },
+      kitchen: { percent: 30, count: 4, tardy: 0 }
     };
 
     const totalTipsInput = document.getElementById('totalTips');
@@ -540,57 +694,162 @@
       }).format(value || 0);
     }
 
+    function calculatePoolPayouts(poolTotal, groups) {
+      const totalWeight = groups.reduce(
+        (sum, group) => sum + group.count * group.weight,
+        0
+      );
+
+      const payouts = groups.map((group) => ({
+        ...group,
+        share: group.weight / totalWeight,
+        basePerPerson: (poolTotal * group.weight) / totalWeight
+      }));
+
+      const forfeitedTotal = payouts.reduce(
+        (sum, payout) =>
+          sum +
+          payout.tardy * payout.basePerPerson * (1 - TARDY_PAYOUT_RATE),
+        0
+      );
+      const recipientBaseTotal = payouts.reduce(
+        (sum, payout) =>
+          sum + (payout.count - payout.tardy) * payout.basePerPerson,
+        0
+      );
+      const redistributionRate = recipientBaseTotal > 0
+        ? forfeitedTotal / recipientBaseTotal
+        : 0;
+
+      return Object.fromEntries(payouts.map((payout) => {
+        const onTimePerPerson =
+          payout.basePerPerson * (1 + redistributionRate);
+        const tardyPerPerson =
+          payout.basePerPerson * TARDY_PAYOUT_RATE;
+        const total =
+          (payout.count - payout.tardy) * onTimePerPerson +
+          payout.tardy * tardyPerPerson;
+
+        return [payout.role, {
+          share: payout.share,
+          onTimePerPerson,
+          tardyPerPerson,
+          total
+        }];
+      }));
+    }
+
+    function renderRole(role, payout) {
+      const config = roles[role];
+
+      document.getElementById(`count-${role}`).textContent = config.count;
+      document.getElementById(`tardy-${role}`).textContent = config.tardy;
+      document.getElementById(`total-${role}`).textContent = money(payout.total);
+      document.getElementById(`person-${role}`).textContent = money(
+        payout.onTimePerPerson
+      );
+      document.getElementById(`person-tardy-${role}`).textContent = config.tardy > 0
+        ? money(payout.tardyPerPerson)
+        : '—';
+    }
+
     function updateServerGroup() {
       const totalTips = Number(totalTipsInput.value || 0);
       const serverGroupTotal = (totalTips * SERVER_POOL_PERCENT) / 100;
-      const totalWeight =
-        roles.server.count * SERVER_WEIGHTS.server +
-        roles.leadServer.count * SERVER_WEIGHTS.leadServer;
-      const serverShare = SERVER_WEIGHTS.server / totalWeight;
-      const leadServerShare = SERVER_WEIGHTS.leadServer / totalWeight;
-      const serverPerPerson = serverGroupTotal * serverShare;
-      const leadServerPerPerson = serverGroupTotal * leadServerShare;
-      const serverTotal = serverPerPerson * roles.server.count;
-      const leadServerTotal = leadServerPerPerson * roles.leadServer.count;
+      const payouts = calculatePoolPayouts(serverGroupTotal, [
+        {
+          role: 'server',
+          count: roles.server.count,
+          tardy: roles.server.tardy,
+          weight: SERVER_WEIGHTS.server
+        },
+        {
+          role: 'leadServer',
+          count: roles.leadServer.count,
+          tardy: roles.leadServer.tardy,
+          weight: SERVER_WEIGHTS.leadServer
+        }
+      ]);
 
       document.getElementById('server-group-total').textContent = money(serverGroupTotal);
-
-      document.getElementById('count-server').textContent = roles.server.count;
-      document.getElementById('total-server').textContent = money(serverTotal);
-      document.getElementById('person-server').textContent = money(serverPerPerson);
+      renderRole('server', payouts.server);
+      renderRole('leadServer', payouts.leadServer);
       document.getElementById('share-server').textContent =
-        `${(serverShare * 100).toFixed(2)}% of server pool each`;
-
-      document.getElementById('count-leadServer').textContent = roles.leadServer.count;
-      document.getElementById('total-leadServer').textContent = money(leadServerTotal);
-      document.getElementById('person-leadServer').textContent = money(leadServerPerPerson);
+        `${(payouts.server.share * 100).toFixed(2)}% base share each`;
       document.getElementById('share-leadServer').textContent =
-        `${(leadServerShare * 100).toFixed(2)}% of server pool each`;
+        `${(payouts.leadServer.share * 100).toFixed(2)}% base share each`;
     }
 
     function updateRole(role) {
       const totalTips = Number(totalTipsInput.value || 0);
       const config = roles[role];
-
       const roleTotal = (totalTips * config.percent) / 100;
-      const perPerson = roleTotal / Math.max(config.count, 1);
+      const payouts = calculatePoolPayouts(roleTotal, [{
+        role,
+        count: config.count,
+        tardy: config.tardy,
+        weight: 1
+      }]);
 
-      document.getElementById(`count-${role}`).textContent = config.count;
-      document.getElementById(`total-${role}`).textContent = money(roleTotal);
-      document.getElementById(`person-${role}`).textContent = money(perPerson);
+      renderRole(role, payouts[role]);
+    }
+
+    function maxTardyForRole(role) {
+      if (role === 'server' || role === 'leadServer') {
+        const otherRole = role === 'server' ? 'leadServer' : 'server';
+        const totalServerStaff = roles.server.count + roles.leadServer.count;
+        const availableSpots = totalServerStaff - 1 - roles[otherRole].tardy;
+
+        return Math.max(0, Math.min(roles[role].count, availableSpots));
+      }
+
+      return Math.max(0, roles[role].count - 1);
+    }
+
+    function updateCounterButtons() {
+      document.querySelectorAll('.step-btn').forEach((button) => {
+        const role = button.dataset.role;
+        const counter = button.dataset.counter || 'count';
+        const isPlus = button.classList.contains('plus');
+
+        if (counter === 'tardy') {
+          const limit = maxTardyForRole(role);
+          button.disabled = isPlus
+            ? roles[role].tardy >= limit
+            : roles[role].tardy === 0;
+          return;
+        }
+
+        button.disabled = !isPlus && roles[role].count === 1;
+      });
     }
 
     function updateAll() {
       updateServerGroup();
       ['barrista', 'busser', 'kitchen'].forEach(updateRole);
+      updateCounterButtons();
     }
 
     document.querySelectorAll('.step-btn').forEach((button) => {
       button.addEventListener('click', () => {
         const role = button.dataset.role;
-        const current = roles[role].count;
+        const counter = button.dataset.counter || 'count';
+        const current = roles[role][counter];
         const delta = button.classList.contains('plus') ? 1 : -1;
-        roles[role].count = Math.max(1, current + delta);
+
+        if (counter === 'tardy') {
+          roles[role].tardy = Math.min(
+            maxTardyForRole(role),
+            Math.max(0, current + delta)
+          );
+        } else {
+          roles[role].count = Math.max(1, current + delta);
+          roles[role].tardy = Math.min(
+            roles[role].tardy,
+            maxTardyForRole(role)
+          );
+        }
+
         updateAll();
       });
     });
