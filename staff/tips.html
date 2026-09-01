@@ -521,7 +521,7 @@
         <div class="role-header">
           <div>
             <div class="role-name">Server Group</div>
-            <div class="role-percent">50% total pool</div>
+            <div class="role-percent" id="server-pool-percent">50% total pool</div>
           </div>
           <div class="group-total-box">
             <span>Subtotal</span>
@@ -671,6 +671,7 @@
 
   <script>
     const SERVER_POOL_PERCENT = 50;
+    const BARRISTA_PERCENT = 8;
     const TARDY_PAYOUT_RATE = 0.85;
     const SERVER_WEIGHTS = {
       server: 45,
@@ -680,7 +681,7 @@
     const roles = {
       server: { count: 3, tardy: 0 },
       leadServer: { count: 1, tardy: 0 },
-      barrista: { percent: 8, count: 2, tardy: 0 },
+      barrista: { percent: BARRISTA_PERCENT, count: 2, tardy: 0 },
       busser: { percent: 12, count: 2, tardy: 0 },
       kitchen: { percent: 30, count: 4, tardy: 0 }
     };
@@ -752,9 +753,16 @@
         : '—';
     }
 
+    function serverPoolPercent() {
+      return SERVER_POOL_PERCENT + (roles.barrista.count === 0
+        ? BARRISTA_PERCENT
+        : 0);
+    }
+
     function updateServerGroup() {
       const totalTips = Number(totalTipsInput.value || 0);
-      const serverGroupTotal = (totalTips * SERVER_POOL_PERCENT) / 100;
+      const poolPercent = serverPoolPercent();
+      const serverGroupTotal = (totalTips * poolPercent) / 100;
       const payouts = calculatePoolPayouts(serverGroupTotal, [
         {
           role: 'server',
@@ -771,6 +779,8 @@
       ]);
 
       document.getElementById('server-group-total').textContent = money(serverGroupTotal);
+      document.getElementById('server-pool-percent').textContent =
+        `${poolPercent}% total pool`;
       renderRole('server', payouts.server);
       renderRole('leadServer', payouts.leadServer);
       document.getElementById('share-server').textContent =
@@ -782,7 +792,15 @@
     function updateRole(role) {
       const totalTips = Number(totalTipsInput.value || 0);
       const config = roles[role];
-      const roleTotal = (totalTips * config.percent) / 100;
+      const roleTotal = config.count === 0 ? 0 : (totalTips * config.percent) / 100;
+      if (config.count === 0) {
+        renderRole(role, {
+          total: 0,
+          onTimePerPerson: 0,
+          tardyPerPerson: 0
+        });
+        return;
+      }
       const payouts = calculatePoolPayouts(roleTotal, [{
         role,
         count: config.count,
@@ -819,7 +837,8 @@
           return;
         }
 
-        button.disabled = !isPlus && roles[role].count === 1;
+        const minimumCount = role === 'barrista' ? 0 : 1;
+        button.disabled = !isPlus && roles[role].count === minimumCount;
       });
     }
 
@@ -842,7 +861,8 @@
             Math.max(0, current + delta)
           );
         } else {
-          roles[role].count = Math.max(1, current + delta);
+          const minimumCount = role === 'barrista' ? 0 : 1;
+          roles[role].count = Math.max(minimumCount, current + delta);
           roles[role].tardy = Math.min(
             roles[role].tardy,
             maxTardyForRole(role)
